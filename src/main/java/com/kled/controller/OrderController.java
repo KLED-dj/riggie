@@ -4,10 +4,7 @@ import com.kled.common.R;
 import com.kled.domain.Orders;
 import com.kled.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("order")
@@ -20,5 +17,14 @@ public class OrderController {
 
         ordersService.submit(orders);
         return R.success("下单成功");
+    }
+
+    /**
+     * @TODO 添加展示订单功能
+     * @return
+     */
+    @GetMapping("/list")
+    public R<String> list(){
+        return null;
     }
 }
