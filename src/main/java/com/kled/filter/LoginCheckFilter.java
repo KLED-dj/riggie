@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @TODO 发现一处bug，客户端登录或者后台登录都会导致用户存储session，并在另一端自动登录成功，并未拦截
+ */
 @Slf4j
 @WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
 public class LoginCheckFilter implements Filter {

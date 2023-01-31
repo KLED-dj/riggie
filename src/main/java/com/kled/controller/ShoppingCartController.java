@@ -100,6 +100,7 @@ public class ShoppingCartController {
         ShoppingCart one = shoppingCarService.getOne(qw);
         if(one.getNumber()==1){
             shoppingCarService.removeById(one);
+            one.setNumber(0);
         }else{
             Integer number = one.getNumber();
             one.setNumber(number-1);
