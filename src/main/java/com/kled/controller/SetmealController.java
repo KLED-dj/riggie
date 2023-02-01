@@ -11,6 +11,10 @@ import com.kled.dto.SetmealDto;
 import com.kled.service.CategoryService;
 import com.kled.service.SetmealDishService;
 import com.kled.service.SetmealService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/setmeal")
+@Api(tags = "套餐相关信息")
 public class SetmealController {
     @Autowired
     private SetmealDishService setmealDishService;
@@ -41,11 +46,18 @@ public class SetmealController {
      */
     @CacheEvict(value = "setmealCache" ,allEntries = true)
     @PostMapping
+    @ApiOperation(value = "新增套餐接口")
     public R<String> save(@RequestBody SetmealDto setmealDto) {
         setmealService.saveWithDish(setmealDto);
         return R.success("添加套餐成功");
     }
 
+    @ApiOperation(value = "套餐分页查询接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "页码",required = true),
+            @ApiImplicitParam(name = "pageSize",value = "每页记录数",required = true),
+            @ApiImplicitParam(name = "name",value = "套餐名称",required = false)
+    })
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name) {
         //构建分页构造器
@@ -88,6 +100,7 @@ public class SetmealController {
      * @param ids
      * @return
      */
+    @ApiOperation(value = "套餐删除接口")
     @CacheEvict(value = "setmealCache" ,allEntries = true)
     @DeleteMapping
     public R<String> deleteById(@RequestParam List<Long> ids) {
@@ -102,6 +115,7 @@ public class SetmealController {
      * @param status
      * @return
      */
+    @ApiOperation(value = "套餐修改状态接口")
     @PostMapping("/status/{status}")
     public R<String> status(@RequestParam List<Long> ids, @PathVariable int status) {
 
@@ -118,7 +132,7 @@ public class SetmealController {
 
         return R.success("修改套餐售卖状态成功");
     }
-
+    @ApiOperation(value = "套餐条件查询列表接口")
     @Cacheable(value = "setmealCache",key = "#setmeal.categoryId+'_'+#setmeal.status")
     @GetMapping("/list")
     public R<List<Setmeal>> list(Setmeal setmeal){
